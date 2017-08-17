@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Basic HTML File</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+	<style>
+		div.info {
+			background : white;
+			position : fixed;
+			width : 66vw;
+			height: 40vh;
+			top:10%;
+			left:16%;
+			z-index : 2;
+			display : none;
+		}
+		div.todo {
+			margin: 2px;
+			min-height : 90vh;
+			max-height: 90vh;
+			overflow-y: auto;
+			background : #9b3131;
+		}
+		div#create {
+			background : white;
+			position : fixed;
+			width : 66vw;
+			height: 80vh;
+			top:10%;
+			left:16%;
+			z-index : 1;
+			display : none;
+		}
+	</style>
+</head>
+<body style="background-color: #9b3131">
+<!--#4caf50-->
+
+	<div class="panel panel-default info" id="infoContain">
+		<div class="panel-body" id="info">
+
+		</div>
+		<button class="btn-danger" onclick="toggleDisplay('infoContain')">Close</button>
+	</div>
+
+	<div class="panel panel-default" id="create">
+		<div class="panel-body">
+			
+			<h1>Add a task to the group</h1>
+			<br/>
+			<form class="form-horizontal" role="form" method="post" action="/create">
+				<div class="form-group">
+					<!--<label for="message" class="col-sm-2 control-label">Message</label>-->
+					Message:<br/>
+					<div class="col-sm-10">
+						<textarea class="form-control" rows="5" name="message" style="resize:none"></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-10 col-sm-offset-2">
+						<input id="submit" name="submit" type="submit" value="Send" class="btn btn-primary">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-10 col-sm-offset-2">
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="panel-body">
+			<button class="btn btn-danger" onclick="toggleDisplay('create')">Close</button>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<div class="container-fluid" style="background: white; margin-top: 5px">
+			<div class="row">
+				<div class="col-md-9">
+					<div class="col-md-4">
+						<div><p>Hi <a href="" id="usernameContain" role="button" class="btn btn-link">User</a></p></div>
+					</div>
+					<div class="col-md-4 col-md-offset-1">
+						<div><h4>Todo...</h4></div>	
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="col-md-6">
+						<!--<a href="" onclick="toggleDisplay('create')" role="button" class="btn btn-link">Create a task</a>-->
+						<button class="btn" onclick="toggleDisplay('create')">Create a task</button>
+					</div>
+					<div class="col-md-6">
+						<a href="/logout" type="button" class="btn btn-link">Log out</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="container-fluid" style="background: white; margin-top: 5px; min-height: 90vh">
+			<div class="row">
+				<!--Newly added part-->
+				<div class="col-md-4 tmp">
+					<div class="col-md-12"><code>New tasks</code></div>
+					<div class="col-md-12 todo" id="new_tasks_div">
+					</div>
+				</div>
+				<!--In progress part-->
+				<div class="col-md-4 tmp">
+					<div class="col-md-12"><code>In Progress tasks</code></div>
+					<div class="col-md-12 todo" id="progress_tasks_div">
+					</div>
+				</div>
+				<!--Completed part-->
+				<div class="col-md-4 tmp">
+					<div class="col-md-12"><code>Completed tasks</code></div>
+					<div class="col-md-12 todo" id="complete_tasks_div">
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<script src="MainScript.js"></script>
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
