@@ -98,23 +98,27 @@ function handleChanges(changes,finalPositions,changeUsers,numChanges){
 function changeAllTodos(todoId,finalPosition,changeUser){
     if(allTodos["new"][todoId] != null && allTodos["new"][todoId] != undefined){
         if(finalPosition == "delete"){
-            allTodos["new"][todoId] = null;
+            //allTodos["new"][todoId] = null;
+            delete allTodos["new"][todoId];
             return;
         }
         var todo = allTodos["new"][todoId];
         todo["category"] = finalPosition;
         todo["userName"] = changeUser;
-        allTodos["new"][todoId] = null;
+        //allTodos["new"][todoId] = null;
+        delete allTodos["new"][todoId];
         allTodos[finalPosition][todoId] = todo;
     }else if(allTodos["progress"][todoId] != null && allTodos["progress"][todoId] != undefined){
         if(finalPosition == "delete"){
-            allTodos["progress"][todoId] = null;
+            //allTodos["progress"][todoId] = null;
+            delete allTodos["progress"][todoId];
             return;
         }
         var todo = allTodos["progress"][todoId];
         todo["category"] = finalPosition;
         todo["userName"] = changeUser;
-        allTodos["progress"][todoId] = null;
+        //allTodos["progress"][todoId] = null;
+        delete allTodos["progress"][todoId];
         allTodos[finalPosition][todoId] = todo;
     }else{
         // Do nothing!
@@ -134,7 +138,7 @@ function fillBox(taskCol,str) {
     }
     for(var key in allTodos[str]){
         if(key != undefined && key != null) {
-            if (allTodos[str][key] != undefined && allTodos[str][key] != null) {
+            if (allTodos[str][key] != undefined && allTodos[str][key] != null) { // This is redundant since we are deleting the key.
                 if(allTodos[str][key]["category"] == str) taskCol.appendChild(getDiv(allTodos[str][key]));
             }
         }
