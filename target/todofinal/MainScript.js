@@ -1,3 +1,10 @@
+/*
+    This script is no longer being used.
+    All its contents are divided into related javascript files
+    and are placed in customjs folder under webapp folder.
+    TodoJs Servlet is used to combine all the JS files and
+    respond with resulting JS.
+ */
 var allTodos = {};
 allTodos["new"] = {};
 allTodos["progress"] = {};
@@ -22,6 +29,8 @@ function displayUsername(){
     xhttp.send();
 }
 
+//Hey This is branch
+
 function loadDoc(){
     //console.log("Making a new request");
     var xhttp = new XMLHttpRequest();
@@ -29,9 +38,15 @@ function loadDoc(){
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             response = this.responseText;
-            //console.log("Following is the response");
-            //console.log(response);
+
             var jsonObject = JSON.parse(response);
+
+            if(jsonObject["redirect"]){
+                var redirectUrl = jsonObject["redirect"];
+                window.location = redirectUrl;
+                return;
+            }
+
             var todos = jsonObject["todos"];
             var changes = jsonObject["changes"];
             var finalPositions = jsonObject["changeposition"];
@@ -154,12 +169,12 @@ function getDiv(todoObj){
         var btnDiv = document.createElement("div");
 
         var btnElem = document.createElement("button");
-        btnElem.className = "btn";
+        btnElem.className = "btn btn-default";
         btnElem.name = type; btnElem.id = id;
         btnElem.onclick = doWork;
 
         var delElem = document.createElement("button");
-        delElem.className = "btn btn-warning pull-right";
+        delElem.className = "btn btn-default pull-right";
         delElem.name = type; delElem.id = id;
         delElem.onclick = doDelete;
         delElem.innerHTML = "Delete";

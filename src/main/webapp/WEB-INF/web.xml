@@ -36,6 +36,10 @@
     <servlet-name>DeleteServlet</servlet-name>
     <servlet-class>DeleteTodo</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>JsServlet</servlet-name>
+    <servlet-class>TodoJS</servlet-class>
+  </servlet>
 
 
   <!-- Note: All <servlet> elements MUST be grouped together and
@@ -72,6 +76,10 @@
   <servlet-mapping>
     <servlet-name>DeleteServlet</servlet-name>
     <url-pattern>/delete</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>JsServlet</servlet-name>
+    <url-pattern>/fetchjs</url-pattern>
   </servlet-mapping>
 
 

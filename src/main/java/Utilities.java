@@ -1,14 +1,19 @@
 import com.google.gson.Gson;
 import javafx.util.Pair;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 public class Utilities {
 
@@ -98,7 +103,10 @@ public class Utilities {
         int userId = idAndRnd.getKey();
         String rnd = idAndRnd.getValue();
         if(userId == -1 || !container.authenticateCurrentUser(userId,rnd)){
-            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+            //resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+            //resp.sendRedirect("/login.html");
+            String s = "{\"redirect\":\"/login.html\"}";
+            Utilities.sendJsonResponse(resp,s);
         }else{
             int numList = Integer.parseInt(req.getParameter("numlist"));
             int changesList = Integer.parseInt(req.getParameter("changeslist"));
@@ -138,4 +146,40 @@ public class Utilities {
         String name = container.getUsername(idAndRnd.getKey(),idAndRnd.getValue());
         Utilities.sendResultMessage(resp,name);
     }
+
+    public static void jsHelper(HttpServletRequest req, HttpServletResponse resp, ServletContext context) throws ServletException, IOException {
+        String allContent = Utilities.getCombinedFile(Utilities.getFilesList(req.getParameter("filenames")),context);
+        resp.setContentType("application/javascript");
+        resp.getWriter().write(allContent);
+        resp.getWriter().flush();
+    }
+
+    public static String getCombinedFile(ArrayList<String> filesNames, ServletContext context) throws IOException{
+        StringBuffer allContent = new StringBuffer();
+        for(String fileName : filesNames){
+            allContent.append(readFromFile(fileName,context));
+        }
+        return allContent.toString();
+    }
+
+    public static ArrayList<String> getFilesList(String filesString) {
+        StringTokenizer tokenizer = new StringTokenizer(filesString,",");
+        ArrayList<String> files = new ArrayList<String>();
+        while(tokenizer.hasMoreElements()){
+            files.add((String) tokenizer.nextElement());
+        }
+        return files;
+    }
+
+    public static String readFromFile(String file, ServletContext context) throws IOException{
+        StringBuffer content = new StringBuffer();
+        BufferedReader br = new BufferedReader( new InputStreamReader(context.getResourceAsStream(file)));
+        String line = null;
+        while( (line = br.readLine()) != null ){
+            content.append(line);
+            content.append("\n");
+        }
+        return content.toString();
+    }
+
 }
