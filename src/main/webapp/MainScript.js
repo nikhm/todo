@@ -10,8 +10,8 @@ allTodos["new"] = {};
 allTodos["progress"] = {};
 allTodos["complete"] = {};
 
-var currentList = 0;
-var currentChange = 0;
+var currentList = -1;
+var currentChange = -1;
 var clearId = -1;
 
 function displayUsername(){

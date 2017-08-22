@@ -8,7 +8,7 @@ import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Container {
+public class Container extends AbstractContainer{
 
     private static Container container;
     private static int userId = 0;
@@ -170,6 +170,8 @@ public class Container {
     }
 
     public String getJSONData(int numList,int numChanges){
+        numList = Math.max(0,numList);
+        numChanges = Math.max(0,numChanges);
         Map<String,List> list = new HashMap<String, List>();
         list.put("todos",extractFrom(todoList,numList));
 
@@ -188,7 +190,7 @@ public class Container {
         return gson.toJson(list);
     }
 
-    private <T> ArrayList<T> extractFrom(ArrayList<T> list,int index){
+    public <T> ArrayList<T> extractFrom(ArrayList<T> list,int index){
         int length = list.size();
         ArrayList<T> arrayList = new ArrayList<T>();
         for(int i=index;i<length;i++){

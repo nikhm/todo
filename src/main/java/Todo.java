@@ -21,6 +21,10 @@ public class Todo {
         return category;
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public int getId() {
         return id;
     }

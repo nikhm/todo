@@ -17,13 +17,25 @@ import java.util.StringTokenizer;
 
 public class Utilities {
 
+    private static final boolean USE_DATABASE = true;
+
     public static Gson gson = null;
+
+    private static AbstractContainer container;
 
     public static String prepareJson(String key,String message){
         if(gson == null) gson = new Gson();
         Map<String,String> currentMap = new HashMap<String, String>();
         currentMap.put(key,message);
         return gson.toJson(currentMap);
+    }
+
+    public static AbstractContainer getContainer(){
+        if(USE_DATABASE){
+            return DatabaseContainer.getInstance();
+        }else{
+            return Container.getInstance();
+        }
     }
 
     public static void sendJsonResponse(HttpServletResponse resp,String s) throws IOException{
@@ -40,8 +52,8 @@ public class Utilities {
     }
 
     public static void createTodo(HttpServletRequest req, HttpServletResponse resp,Pair<Integer,String> pair) throws ServletException, IOException {
-        Container container = Container.getInstance();
         //Pair<Integer,String> pair = getIdAndRnd(req);
+        container = getContainer();
         int userId = pair.getKey();
         String rnd = pair.getValue();
         String message = req.getParameter("message");
@@ -58,7 +70,8 @@ public class Utilities {
         if(username == null || password == null){
             return;
         }
-        Container container = Container.getInstance();
+        //Container container = Container.getInstance();
+        container = getContainer();
         Pair<Integer,String> useridAndRnd = container.authenticateUser(username,password);
         if(useridAndRnd != null){
             int userId = useridAndRnd.getKey();
@@ -72,7 +85,8 @@ public class Utilities {
     }
 
     public static void logoutHelper(HttpServletRequest req, HttpServletResponse resp,Pair<Integer,String> idAndRnd) throws ServletException, IOException {
-        Container container = Container.getInstance();
+        //Container container = Container.getInstance();
+        container = getContainer();
         int userId = idAndRnd.getKey();
         String rnd = idAndRnd.getValue();
         if(container.logout(userId,rnd)){
@@ -89,7 +103,8 @@ public class Utilities {
             resp.sendRedirect("/login.html");
             return;
         }
-        Container container = Container.getInstance();
+        //Container container = Container.getInstance();
+        container = getContainer();
         if(container.createUser(username,password)){
             resp.sendRedirect("/login.html?signup=true");
         }else{
@@ -98,7 +113,7 @@ public class Utilities {
     }
 
     public static void mainHelper(HttpServletRequest req, HttpServletResponse resp,Pair<Integer,String> idAndRnd) throws ServletException, IOException {
-        Container container = Container.getInstance();
+        container = getContainer();
         //Pair<Integer,String> pair = getIdAndRnd(req);
         int userId = idAndRnd.getKey();
         String rnd = idAndRnd.getValue();
@@ -115,7 +130,7 @@ public class Utilities {
         }
     }
     public static void progressHelper(HttpServletRequest req, HttpServletResponse resp,Pair<Integer,String> idAndRnd) throws ServletException, IOException {
-        Container container = Container.getInstance();
+        container = getContainer();
         //Pair<Integer,String> pair = getIdAndRnd(req);
         int userId = idAndRnd.getKey();
         String rnd = idAndRnd.getValue();
@@ -128,7 +143,7 @@ public class Utilities {
     }
 
     public static void deleteHelper(HttpServletRequest req, HttpServletResponse resp,Pair<Integer,String> idAndRnd) throws ServletException, IOException {
-        Container container = Container.getInstance();
+        container = getContainer();
         //Pair<Integer,String> pair = getIdAndRnd(req);
         int userId = idAndRnd.getKey();
         String rnd = idAndRnd.getValue();
@@ -141,7 +156,7 @@ public class Utilities {
     }
 
     public static void getUsernameHelper(HttpServletRequest req, HttpServletResponse resp,Pair<Integer,String> idAndRnd) throws ServletException, IOException {
-        Container container = Container.getInstance();
+        container = getContainer();
         //Pair<Integer,String> pair = getIdAndRnd(req);
         String name = container.getUsername(idAndRnd.getKey(),idAndRnd.getValue());
         Utilities.sendResultMessage(resp,name);
