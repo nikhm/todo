@@ -53,6 +53,7 @@ public class Container extends AbstractContainer{
     }
 
     public synchronized boolean createUser(String name, String password){
+        if(!customSanitize(name)) return false;
         if(nameToId.containsKey(name)) return false;
         User user = new User(name,++userId);
         idToUser.put(userId,user);
@@ -100,6 +101,7 @@ public class Container extends AbstractContainer{
     }
 
     public boolean createTodo(int userId,String rnd,String message){
+        if(!customSanitize(message)) return false;
         if(authenticateCurrentUser(userId,rnd)){
             Todo todo;
             synchronized ((Integer)this.todoId) {

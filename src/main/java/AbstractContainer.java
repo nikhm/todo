@@ -31,4 +31,12 @@ public abstract class AbstractContainer {
     public abstract boolean progressTodo(int userId,String rnd,int todoId);
 
     public abstract String getJSONData(int numList,int numChanges);
+
+    protected boolean customSanitize(String message){
+        int l = message.length();
+        for(int i=0;i<l;i++){
+            if(message.charAt(i) == '>' || message.charAt(i) == '<') return false;
+        }
+        return true;
+    }
 }

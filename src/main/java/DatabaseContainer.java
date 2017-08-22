@@ -80,6 +80,7 @@ public class DatabaseContainer extends AbstractContainer{
     }
 
     public synchronized boolean createUser(String name, String password){
+        if(!customSanitize(name)) return false;
         if(usernameExists(name)) return false;
         String insertQuery = "INSERT INTO USERS VALUES (?,?,?)";
         try {
@@ -183,6 +184,7 @@ public class DatabaseContainer extends AbstractContainer{
     }
 
     public boolean createTodo(int userId,String rnd,String message){
+        if(!customSanitize(message)) return false;
         if(!authenticateCurrentUser(userId,rnd)) return false;
         String todoQuery = "INSERT INTO TODOS VALUES (?,?,?,?);";
         try{
